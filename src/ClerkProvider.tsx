@@ -1,5 +1,6 @@
 import Clerk from "@clerk/clerk-js";
 import {
+  Accessor,
   JSX,
   Resource,
   createContext,
@@ -29,6 +30,12 @@ const ClerkProvider = (props: { children: JSX.Element }) => {
   );
 };
 
-export const useClerk = () => useContext(ClerkContext);
+export const useClerk = () => {
+  const context = useContext(ClerkContext);
+  if (!context) {
+    throw new Error("useClerk() must be used between ClerkProvider");
+  }
+  return context as Accessor<Clerk>;
+}
 
 export default ClerkProvider;
